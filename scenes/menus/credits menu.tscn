@@ -1,0 +1,140 @@
+[gd_scene load_steps=22 format=3 uid="uid://hfkmvq74jcri"]
+
+[ext_resource type="Script" path="res://scenes/menus/credits menu.gd" id="1_i755f"]
+[ext_resource type="Texture2D" uid="uid://bggn4j2x81mod" path="res://assets/images/gameplay/icons/icon-gf.png" id="2_18qos"]
+[ext_resource type="Texture2D" uid="uid://y8c4a1bk8wkl" path="res://assets/images/menus/menuBGDesat.png" id="2_ehr42"]
+[ext_resource type="Shader" path="res://scenes/menus/texture_mult.gdshader" id="2_exo15"]
+[ext_resource type="Script" path="res://resources/CreditsMenuData.gd" id="3_j5qq8"]
+[ext_resource type="Texture2D" uid="uid://cxcsjc5lvkj08" path="res://assets/images/gameplay/icons/icon-tankman.png" id="4_i7sgi"]
+[ext_resource type="Texture2D" uid="uid://b71wjo1kmexma" path="res://assets/images/gameplay/icons/icon-bf-pixel.png" id="4_wxl7q"]
+[ext_resource type="Texture2D" uid="uid://dtc6ckladq0td" path="res://addons/discord-sdk-gd/nodes/assets/circle.svg" id="5_ltxq5"]
+[ext_resource type="Texture2D" uid="uid://erlcw6602qeq" path="res://assets/images/gameplay/icons/icon-pico.png" id="5_ojsrm"]
+[ext_resource type="Script" path="res://resources/CreditsDataList.gd" id="6_cxfhx"]
+
+[sub_resource type="Resource" id="Resource_y54hq"]
+script = ExtResource("3_j5qq8")
+icon = ExtResource("2_18qos")
+bgcolor = Color(0.647059, 0, 0.301961, 1)
+name = "Example"
+descripsion = ""
+
+[sub_resource type="Resource" id="Resource_h8s72"]
+script = ExtResource("3_j5qq8")
+icon = ExtResource("4_i7sgi")
+bgcolor = Color(0.121569, 0.121569, 0.121569, 1)
+name = "Example"
+descripsion = ""
+
+[sub_resource type="Resource" id="Resource_xbfjt"]
+script = ExtResource("3_j5qq8")
+icon = ExtResource("5_ojsrm")
+bgcolor = Color(0.717647, 0.847059, 0.333333, 1)
+name = "Example "
+descripsion = ""
+
+[sub_resource type="Resource" id="Resource_p0ije"]
+script = ExtResource("6_cxfhx")
+data = Array[ExtResource("3_j5qq8")]([SubResource("Resource_y54hq"), SubResource("Resource_h8s72"), SubResource("Resource_xbfjt")])
+
+[sub_resource type="Gradient" id="Gradient_wxqfl"]
+colors = PackedColorArray(0.486275, 0.341176, 0.839216, 1, 0.999998, 0.394942, 0.248398, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p86xa"]
+gradient = SubResource("Gradient_wxqfl")
+fill_to = Vector2(0, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dj1aw"]
+shader = ExtResource("2_exo15")
+shader_parameter/texture_mult = SubResource("GradientTexture2D_p86xa")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dn281"]
+emission_shape = 3
+emission_box_extents = Vector3(640, 360, 20)
+gravity = Vector3(0, -540, 0)
+scale_min = 5.0
+scale_max = 12.0
+color = Color(1, 0.937255, 0.67451, 1)
+hue_variation_max = 1.0
+turbulence_influence_max = 1.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_638bc"]
+light_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qwdrj"]
+bg_color = Color(0.482353, 0.839216, 0.964706, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+shadow_size = 32
+anti_aliasing_size = 1.1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_t6s4v"]
+light_mode = 2
+
+[node name="credits menu" type="Node2D"]
+script = ExtResource("1_i755f")
+data = SubResource("Resource_p0ije")
+metadata/_edit_vertical_guides_ = [-92.0]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 620.0
+offset_top = 340.0
+offset_right = 660.0
+offset_bottom = 380.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_dj1aw")
+position = Vector2(640, 360)
+texture = ExtResource("2_ehr42")
+metadata/_edit_lock_ = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+texture_filter = 1
+position = Vector2(640, 360)
+amount = 512
+process_material = SubResource("ParticleProcessMaterial_dn281")
+fixed_fps = 60
+local_coords = true
+
+[node name="Template" type="Node2D" parent="."]
+position = Vector2(52, 20)
+
+[node name="Panel" type="Panel" parent="Template"]
+material = SubResource("CanvasItemMaterial_638bc")
+offset_right = 150.0
+offset_bottom = 150.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_qwdrj")
+
+[node name="icon" type="Sprite2D" parent="Template/Panel"]
+material = SubResource("CanvasItemMaterial_t6s4v")
+position = Vector2(75, 75)
+texture = ExtResource("4_wxl7q")
+hframes = 2
+metadata/_edit_lock_ = true
+
+[node name="PointLight2D" type="PointLight2D" parent="Template/Panel/icon"]
+position = Vector2(-5, 0)
+blend_mode = 2
+shadow_color = Color(0, 1, 0, 0)
+texture = ExtResource("5_ltxq5")
+texture_scale = 3.25
+metadata/_edit_lock_ = true
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="Template"]
+position = Vector2(75, 75)
+rect = Rect2(-75, -75, 150, 150)
+enable_mode = 1
+enable_node_path = NodePath("../Panel")
+
+[node name="items" type="Node2D" parent="."]
